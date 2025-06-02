@@ -8,22 +8,24 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  friends   Friend[] @relation("UserFriends")
-  servers   Server[] @relation("UserServers")
-  messages  Message[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  email         String    @unique
+  password      String
+  friends       Friend[]  @relation("UserFriends")
+  friendOf      Friend[]  @relation("FriendUsers")
+  servers       Server[]  @relation("UserServers")
+  memberOfServers Server[] @relation("ServerMembers")
+  messages      Message[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Friend {
-  id        Int    @id @default(autoincrement())
-  user      User   @relation("UserFriends", fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  user      User     @relation("UserFriends", fields: [userId], references: [id])
   userId    Int
-  friend    User   @relation("FriendUsers", fields: [friendId], references: [id])
+  friend    User     @relation("FriendUsers", fields: [friendId], references: [id])
   friendId  Int
   createdAt DateTime @default(now())
 }
